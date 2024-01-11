@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.niallmurph.noteapp.data.NotesDataSource
 import com.niallmurph.noteapp.screens.NoteScreen
 import com.niallmurph.noteapp.ui.theme.NoteAppTheme
 
@@ -14,7 +15,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoteAppTheme {
                 NoteScreen(
-                    notes = emptyList(),
+                    notes = NotesDataSource().loadNotes(),
                     onAddNote = {},
                     onRemoveNote = {}
                 )
