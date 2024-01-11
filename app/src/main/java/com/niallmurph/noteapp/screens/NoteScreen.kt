@@ -28,6 +28,7 @@ import com.niallmurph.noteapp.data.Note
 import com.niallmurph.noteapp.data.NotesDataSource
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
     notes: List<Note>,
