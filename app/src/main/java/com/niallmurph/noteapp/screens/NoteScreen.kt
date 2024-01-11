@@ -1,17 +1,23 @@
 package com.niallmurph.noteapp.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,12 +25,15 @@ import com.niallmurph.noteapp.R
 import com.niallmurph.noteapp.components.NoteButton
 import com.niallmurph.noteapp.components.NoteInputText
 import com.niallmurph.noteapp.data.Note
+import com.niallmurph.noteapp.data.NotesDataSource
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
-    notes : List<Note>,
-    onAddNote : () -> Unit,
-    onRemoveNote : () -> Unit
+    notes: List<Note>,
+    onAddNote: () -> Unit,
+    onRemoveNote: () -> Unit
 ) {
 
     var title by remember { mutableStateOf("") }
@@ -76,13 +85,52 @@ fun NoteScreen(
             NoteButton(
                 text = "Save",
                 onClick = {
-                    if(title.isNotEmpty() && description.isNotEmpty()) {
+                    if (title.isNotEmpty() && description.isNotEmpty()) {
                         //SAVE
                         title = ""
                         description = ""
                     }
                 })
 
+        }
+        Divider(modifier = Modifier.padding(12.dp))
+        LazyColumn {
+            items(notes) { note ->
+                NoteRow(note = note) {
+                    
+                }
+            }
+        }
+
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun NoteRow(
+    modifier: Modifier = Modifier,
+    note: Note,
+    onNoteClicked: () -> Unit
+) {
+    Surface(
+        modifier = modifier
+            .padding(4.dp)
+            .clip(RoundedCornerShape(topEnd = 33.dp))
+            .fillMaxWidth(),
+        color = Color(0xFFDFE6EB),
+        elevation = 6.dp
+    ) {
+        Column(
+            modifier = modifier
+                .clickable {
+                    onNoteClicked()
+                }
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(text = note.title, style = MaterialTheme.typography.subtitle2)
+            Text(text = note.description, style = MaterialTheme.typography.subtitle1)
+            Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")), style = MaterialTheme.typography.caption)
         }
 
     }
@@ -92,7 +140,7 @@ fun NoteScreen(
 @Composable
 fun NoteScreenPreview() {
     NoteScreen(
-        notes = emptyList(),
+        notes = NotesDataSource().loadNotes(),
         onAddNote = {},
         onRemoveNote = {}
     )
