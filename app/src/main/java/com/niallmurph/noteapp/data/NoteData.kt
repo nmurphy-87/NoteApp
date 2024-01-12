@@ -1,5 +1,7 @@
 package com.niallmurph.noteapp.data
 
+import com.niallmurph.noteapp.model.Note
+
 class NotesDataSource {
     fun loadNotes(): List<Note> {
         return listOf(
