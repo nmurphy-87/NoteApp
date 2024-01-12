@@ -2,7 +2,7 @@ package com.niallmurph.noteapp.screens
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.niallmurph.noteapp.data.Note
+import com.niallmurph.noteapp.model.Note
 import com.niallmurph.noteapp.data.NotesDataSource
 
 class NoteViewModel : ViewModel() {
