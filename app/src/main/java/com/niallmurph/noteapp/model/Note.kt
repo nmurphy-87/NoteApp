@@ -5,8 +5,8 @@ import androidx.annotation.RequiresApi
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDateTime
-import java.util.UUID
+import java.time.Instant
+import java.util.*
 
 @Entity(tableName = "notes_table")
 data class Note @RequiresApi(Build.VERSION_CODES.O) constructor(
@@ -17,5 +17,5 @@ data class Note @RequiresApi(Build.VERSION_CODES.O) constructor(
     @ColumnInfo(name = "note_description")
     val description : String,
     @ColumnInfo(name = "note_date")
-    val entryDate : LocalDateTime = LocalDateTime.now()
+    val entryDate : Date = Date.from(Instant.now())
 )
